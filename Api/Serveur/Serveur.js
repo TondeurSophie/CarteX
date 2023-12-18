@@ -44,19 +44,3 @@ function startServer() {
 
 module.exports = { startServer };
 
-// Liaison à la base de données
-const mysql = require('mysql');
-
-const connection = mysql.createConnection({
-    host: 'localhost',
-    password: 'paulwifi',
-    user: 'root',
-    database: 'carteX',
-});
-
-connection.connect((err) => {
-    if (err) throw err;
-    console.log('Connecté à la base de données MySQL!');
-}
-);
-
