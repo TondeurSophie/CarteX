@@ -227,12 +227,19 @@ app.post('/utilisateursBDD', async(req,res) => {
             console.log("mail non trouvé")
             res.status(404).json({ error: 'Article not found' });
         }        
-        console.log(rows);
-        res.status(200).json(rows);
+        // console.log(rows);
+        // res.status(200).json(rows);
     }
     catch(err){
         console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
+    finally {
+        if (conn) {
+            conn.release();
+        }
+    }
+
 })
 
 app.get('/api/cartes', (req, res) => {

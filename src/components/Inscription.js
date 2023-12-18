@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '../App.css'
+import '../App.css';
+
 
 export default function Inscription() {
 
@@ -11,14 +12,19 @@ export default function Inscription() {
     role:null
 });
 
+
+
    //ajout utilisateur dans la BDD grace au back
   const handleLogin = async () => {
     try {
       console.log(donneesUtili)
-    const reponse = await fetch(`http://localhost:3008/utilisateurs`, 
+    const reponse = await fetch(`http://localhost:3010/api/inscription`, 
     {method: "POST", headers:{'Content-Type':'application/json'} ,body: JSON.stringify(donneesUtili)})
       if(reponse.status === 200){
+        alert("inscription réussie")
         window.location.reload();
+      }else{
+        console.error("Erreur lors de l'inscription", await reponse.text())
       }
     }
     catch(error){

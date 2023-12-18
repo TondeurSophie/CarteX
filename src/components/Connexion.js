@@ -11,28 +11,29 @@ function Connexion() {
     mdp:null,
 });
 
-//permet de récupérer tous les utilisateurs
+// permet de récupérer tous les utilisateurs
 const connexion = async ()=>{
   //Chargement BDD
-  await fetch(`http://localhost:3008/utilisateurs`, 
+  await fetch(`http://localhost:3010/utilisateursBDD`, 
   {method: "GET"})
   .then(reponse => reponse.json()).then(data => {
       setMail(data);
       setMdp(data);
-      // setAffichage(true);
-  })
+    })
   .catch(error => console.error(error));
 };
 
-//permet d'utiliser que l'utilisateur qui correspond à l'email et mdp
+
+//permet d'utiliser que l'utilisateur qui correspond au mail et mdp
   const handleLogin = async () => {
     
-    await fetch(`http://localhost:3008/utilisateursBDD`, 
+    await fetch(`http://localhost:3010/utilisateursBDD`, 
     {method: "POST",headers:{'Content-Type':'application/json'} ,body: JSON.stringify(donneesConn)})
     .then(reponse => 
       {if (reponse.status === 200){
-        //console.log(reponse);
+        // console.log(reponse);
         reponse.json().then(data => localStorage.setItem("key", data.id))
+        console.log("OK")
       }}
       )
 
