@@ -1,0 +1,45 @@
+.modal-overlay {
+    margin-top: 110px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: black;
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+    width: 80%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modal-body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .card-image img {
+    max-width: 70%;
+    border-radius: 5px;
+  }
+  
+  .card-info {
+    max-width: 40%;
+  }
+  
