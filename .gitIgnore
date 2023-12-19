@@ -1,0 +1,14 @@
+# Fichiers et dossiers à ignorer
+.env
+node_modules/
+Connexion.html
+Connexion.js
+Inscription.html
+Inscription.js
+carte.js
+Index.js
+Accueil.html
+
+# Packages et fichiers de configuration liés
+package-lock.json
+package.json

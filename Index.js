@@ -1,57 +1,78 @@
-// Index.js
+// const http = require('http');
+// const serveur = require(__dirname + '/Api/Serveur/Serveur');
 
-const express = require('express');
-const app = express();
-const port = 3008;
-const cors = require('cors');
-const mysql = require('mysql');
-// Import .env variables
-require('dotenv').config();
+// import('node-fetch').then((fetch) => {
+//     console.log('Fetch importé avec succès.');
+// }
+// ).catch((err) => {
+//     console.error('Erreur lors de l\'import de fetch:', err);
+//   });
+// const express = require('express');
+// const app = express();
+// console.log("Ceci est l'api.");
 
-app.use(cors());
-app.use(express.json());
+// // Démarrage du serveur puis exécution du code API
+// serveur.startServer().then(() => {
+//     console.log("Ceci est l'api.");
 
-const connection = mysql.createConnection({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port : process.env.DB_PORT,
-    host: process.env.DB_HOST,
-});
+//     http.get('http://localhost:3008/api/cartes', (response) => {
+//         let data = '';
+
+//         response.on('data', (chunk) => {
+//             data += chunk;
+//         });
+
+//         response.on('end', () => {
+//             console.log(data);
+//         });
+
+//     }).on('error', (err) => {
+//         console.error('Error: ' + err.message);
+//     });
+// });
+
+// http.get('http://localhost:3008/api/utilisateurs', (response) => {
+//     let data = '';
+
+//     response.on('data', (chunk) => {
+//         data += chunk;
+//     });
+
+//     response.on('end', () => {
+//         console.log(data);
+//     });
+
+// }).on('error', (err) => {
+//     console.error('Error: ' + err.message);
+// }
+// );
+
+// import('node-fetch').then((fetch) => {
+//     app.get('/api/import-cartes', async (req, res) => {
+//       try {
+//         const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php');
+//         const jsonData = await response.json();
+  
+//         for (const carteData of jsonData.data) {
+//           await Carte.findOrCreate({
+//             where: { id: carteData.id },
+//             defaults: {
+//               name: carteData.name,
+//               description: carteData.desc,
+//             }
+//           });
+//         }
+  
+//         res.status(200).json({ message: 'Cartes importées avec succès dans la BDD.' });
+//       } catch (error) {
+//         console.error('Erreur:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//       }
+//     });
+//   });
 
 
-app.get('/api/cartes/:id', (req, res) => {
-    const id = req.params.id;
-    connection.query('SELECT * FROM cartes WHERE id_carte = ?', [id], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
-});
 
 
-app.post('/api/cartes', (req, res) => {
-    const newCard = req.body;
-    connection.query('INSERT INTO cartes SET ?', newCard, (err, results) => {
-        if (err) throw err;
-        res.status(201).json({ id: results.insertId });
-    });
-});
 
 
-app.put('/api/cartes/:id', (req, res) => {
-    const id = req.params.id;
-    const cardUpdates = req.body;
-    connection.query('UPDATE cartes SET ? WHERE id_carte = ?', [cardUpdates, id], (err, results) => {
-        if (err) throw err;
-        res.json({ message: 'carte mise à jour avec succès.' });
-    });
-});
-
-
-app.delete('/api/cartes/:id', (req, res) => {
-    const id = req.params.id;
-    connection.query('DELETE FROM cartes WHERE id = ?', [id], (err, results) => {
-        if (err) throw err;
-        res.json({ message: 'carte supprimée avec succès.' });
-    });
-});
