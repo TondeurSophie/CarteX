@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h2 {
+            text-align: center;
+        }
+        .carte {
+            border: 3px solid #f1f1f1;
+            padding: 20px;
+            margin: 20px;
+        }
+        .carte-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Liste des Cartes</h2>
+    <div id="cartesContainer"></div>
+    
+    <script>
+        async function fetchData() {
+            try {
+                const jsonData = await fetch('http://localhost:3008/api/cartes').then(response => response.json());
+    
+                const cartesContainer = document.getElementById('cartesContainer');
+                jsonData.data.forEach(carte => {
+                    const carteDiv = document.createElement('div');
+                    carteDiv.classList.add('carte');
+                    carteDiv.innerHTML = `
+                        <img class="carte-image" src="${carte.card_images[0].image_url}" alt="${carte.name}">
+                        <h3>${carte.name}</h3>
+                        <p>${carte.desc}</p>
+                    `;
+                    cartesContainer.appendChild(carteDiv);
+                });
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+    
+        window.addEventListener('load', fetchData);
+    </script>
+    
+</body>
+</html>

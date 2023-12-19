@@ -1,0 +1,86 @@
+<!-- Inscription. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            border: 3px solid #f1f1f1;
+        }
+
+        input[type=text], input[type=email], input[type=password], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px auto;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h2>Inscription d'utilisateur</h2>
+    <form id="inscriptionForm">
+        <input type="text" id="pseudo" placeholder="Pseudo" required><br>
+        <input type="email" id="mail" placeholder="Email" required><br>
+        <input type="password" id="mdp" placeholder="Mot de passe" required><br>
+        <select id="role">
+            <option value="1">Utilisateur</option>
+            <option value="2">Admin</option>
+        </select><br>
+        <button type="submit">Inscrire</button>
+    </form>
+
+    <script>
+        document.getElementById('inscriptionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const pseudo = document.getElementById('pseudo').value;
+            const mail = document.getElementById('mail').value;
+            const mdp = document.getElementById('mdp').value;
+            const role = document.getElementById('role').value;
+
+            fetch('http://localhost:3020/api/inscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ pseudo, mail, mdp, role }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('Utilisateur inscrit avec succès!');
+            })
+            .catch((error) => {
+                console.error('Erreur:', error);
+            });
+        });
+    </script>
+</body>
+</html>

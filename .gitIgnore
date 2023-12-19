@@ -1,0 +1,7 @@
+# Fichiers et dossiers à ignorer
+.env
+node_modules/
+
+# Packages et fichiers de configuration liés
+package-lock.json
+package.json
