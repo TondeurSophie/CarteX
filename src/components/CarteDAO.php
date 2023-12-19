@@ -12,11 +12,9 @@ class CarteDAO {
     //Méthode pour ajouter un utilisateur dans la BDD
     public function ajouterCarte(Carte $carte) {
 
-        if($carte->getName() == "" || is_string($carte->getId_carte()) ){
+        if($carte->getName() == "" || is_int($carte->getName()) || is_int($carte->getType())|| is_int($carte->getFrameType())|| is_int($carte->getDescription())|| is_int($carte->getRace())|| is_int($carte->getArcheType())|| is_int($carte->getYgoprodeck_url())|| is_int($carte->getCards_sets())|| is_int($carte->getCards_images())|| is_int($carte->getCard_price()) ){
             throw new InvalidArgumentException("champs invalide");
-        }else if(preg_match('/\s/',$carte->getName()) ){
-            throw new InvalidArgumentException("champs invalide");
-        }else if(preg_match('/[0-9]/',$carte->getName()) ){
+        }else if (preg_match('/\s/',$carte->getFrameType()) || preg_match('/\s/',$carte->getRace())){
             throw new InvalidArgumentException("champs invalide");
         }
 
@@ -39,6 +37,11 @@ class CarteDAO {
     }
 
     public function supprimerCarte(Carte $carte) {
+
+        if(is_string($carte->getId())||is_int($carte->getName())){
+            throw new InvalidArgumentException("erreur de format des informations");
+        }
+
         try {
             //Préparation de la requête d'insertion
             $requete = $this->bdd->prepare("DELETE FROM cartes WHERE `name` = ?");

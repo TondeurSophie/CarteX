@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once ("./front/src/components/Carte.php");
 require_once ("./front/src/components/CarteDAO.php");
 // require_once("./front/src/components/config.php");
 
@@ -38,10 +39,15 @@ class CarteDAOTest extends TestCase{
         
         if($fonction == "ajouter"){
             $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price);
-            if($name == "" || is_int($name) || preg_match('/\s/',$name) || preg_match('/[0-9]/',$name)){
+            if($name == "" || is_int($name) || is_int($type)|| is_int($frameType)|| is_int($description)|| is_int($race)|| is_int($archetype)|| is_int($ygoprodeck_url)|| is_int($cards_sets)|| is_int($cards_images)|| is_int($cards_price) ){
                 $this->expectException(InvalidArgumentException::class);
-                $this->expectExceptionMessage("nom invalide");
-                throw new InvalidArgumentException("nom invalide");
+                $this->expectExceptionMessage("champs invalide");
+                throw new InvalidArgumentException("champs invalide");
+            }
+            else if(preg_match('/\s/',$frameType) || preg_match('/\s/',$race) ){
+                $this->expectException(InvalidArgumentException::class);
+                $this->expectExceptionMessage("champs invalide");
+                throw new InvalidArgumentException("champs invalide");
             }
             $this->carte->ajouterCarte($cartes);
             $stmt = $this->pdo->prepare("SELECT * FROM cartes WHERE name = :name");
@@ -50,8 +56,9 @@ class CarteDAOTest extends TestCase{
             // var_dump($cartes);
             $this->assertEquals($expected,$name);
         }
+
         else if($fonction == "supprimer"){
-            if(is_string($id)||$name != ""){
+            if(is_string($id)||is_int($name)){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("erreur de format des informations");
             }
@@ -64,6 +71,7 @@ class CarteDAOTest extends TestCase{
             $this->assertFalse($cartes);
             
         }
+
         // else if($fonction == "modifier"){
         //     if($id == "" || $nom == "" || is_string($id) || is_int($nom) ||preg_match('/\s/',$nom) || preg_match('/[0-9]/',$nom)){
         //         $this->expectException(InvalidArgumentException::class);
@@ -81,14 +89,19 @@ class CarteDAOTest extends TestCase{
 
     public static function Provider(){
         return[
+            //modèle :
+            // ["","expected",id, "name", "type", "frameType", "description", "race", "archetype", "ygoprodeck_url", "cards_sets", "cards_images", "cards_price"],
             
-            // ["ajouter",$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price],
-            ["ajouter","test",1,"test","feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price"]
+            // ["ajouter","test",1,"test","feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price"],
+            ["ajouter",1,2,1,"feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price"],
+            ["ajouter","test2",2,"test2",2,5,1,9,10,0,2,6,8],
+            ["ajouter","1",3,"1","feu","nk ut","sdqfgdhf","ogre g","qsdf","url","s","image","price"],
 
-            // ["supprimer","",29,""],
-            // ["supprimer","","",""],
-            // ["supprimer","","29",""],
-            // ["supprimer","",29,"qsdfrgt"],
+
+            // ["supprimer","test",1,"test","","","","","","","","",""],
+            ["supprimer","test","1","test","","","","","","","","",""],
+            ["supprimer",1,1,1,"","","","","","","","",""],
+
 
             // ["modifier","test",26,"test"],
             // ["modifier","","",""],
