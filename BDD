@@ -21,4 +21,5 @@ CREATE TABLE cartes (
     cards_sets TEXT,
     cards_images TEXT,
     cards_price TEXT
+    id_joueur int(11) not null;
 );
