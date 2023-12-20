@@ -14,10 +14,11 @@ class Carte {
     private $cards_sets;
     private $cards_images;
     private $cards_price;
+    private $id_joueur;
 
     //Fonction en public car elles sont appelées en dehors de la classe
     //Fonction pour créer les objets
-    public function __construct($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price) {
+    public function __construct($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur) {
         $this->id = $id;
         $this->name = $name;
         $this->type = $type;
@@ -29,10 +30,14 @@ class Carte {
         $this->cards_sets = $cards_sets;
         $this->cards_images = $cards_images;
         $this->cards_price = $cards_price;
+        $this->id_joueur = $id_joueur;
     }
     //Fonction pour récupérer une caracteristique de l'objet
     public function getId() {
         return $this->id;
+    }
+    public function getIdJoueur() {
+        return $this->id_joueur;
     }
 
     public function getId_carte() {
@@ -121,6 +126,9 @@ class Carte {
 
     public function setCards_price($cards_price){
         $this->cards_price= $cards_price;
+    }
+    public function setIdJoueur($id_joueur){
+        $this->id_joueur= $id_joueur;
     }
 }
 ?>

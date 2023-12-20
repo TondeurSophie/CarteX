@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_POST["ygoprodeck_url"],
         $_POST["cards_sets"],
         $_POST["cards_images"],
-        $_POST["card_price"]
+        $_POST["card_price"],
+        $_POST["id_joueur"]
     );
 
     //Création du DAO pour les cartes
