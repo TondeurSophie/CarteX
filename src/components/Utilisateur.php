@@ -38,8 +38,5 @@ class Utilisateur {
     }
 
 
-    public function setPseudo($pseudo){
-        $this->pseudo=$pseudo;
-    }
 }
 ?>

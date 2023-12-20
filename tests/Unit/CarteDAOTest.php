@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
+//utilise les fichiers
 require_once ("./front/src/components/Carte.php");
 require_once ("./front/src/components/CarteDAO.php");
 // require_once("./front/src/components/config.php");
@@ -10,12 +11,13 @@ class CarteDAOTest extends TestCase{
     private $pdo;
     private $carte;
 
-    //pour BDD
+    //pour confugurer la BDD
     protected function setUp(): void{
         $this->configureBDD();
         $this->carte = new CarteDAO($this->pdo);
     }
 
+    //prend les infos de connexion à la BDD
     private function configureBDD(): void{
         $this->pdo = new PDO(
             sprintf(
@@ -37,8 +39,11 @@ class CarteDAOTest extends TestCase{
      */
     public function testCarte($fonction,$expected,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price){
         
+        //test de la méthode d'ajout de carte
         if($fonction == "ajouter"){
+            //création de l'objet
             $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price);
+            //Mise en place des exceptions
             if($name == "" || is_int($name) || is_int($type)|| is_int($frameType)|| is_int($description)|| is_int($race)|| is_int($archetype)|| is_int($ygoprodeck_url)|| is_int($cards_sets)|| is_int($cards_images)|| is_int($cards_price) ){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("champs invalide");
@@ -49,55 +54,70 @@ class CarteDAOTest extends TestCase{
                 $this->expectExceptionMessage("champs invalide");
                 throw new InvalidArgumentException("champs invalide");
             }
+            //appelation de la méthode
             $this->carte->ajouterCarte($cartes);
             $stmt = $this->pdo->prepare("SELECT * FROM cartes WHERE name = :name");
             $stmt->bindParam(":name",$name);
             $cartes=$stmt->fetch(PDO::FETCH_ASSOC);
             // var_dump($cartes);
+            //vérification si $expected est égale à $name
             $this->assertEquals($expected,$name);
         }
-
+        //test de la méthode de suppression de carte
         else if($fonction == "supprimer"){
+            //Mise en place des exceptions
             if(is_string($id)||is_int($name)){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("erreur de format des informations");
             }
+            //création de l'objet
             $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price);
+            //appelation de la méthode
             $this->carte->supprimerCarte($cartes);
             $stmt = $this->pdo->prepare("SELECT * FROM cartes WHERE id = :id");
             $stmt->bindParam(":id",$id);
             $cartes=$stmt->fetch(PDO::FETCH_ASSOC);
             // var_dump($cartes);
+            //vérification si le resultat est False
             $this->assertFalse($cartes);
             
         }
-
-        // else if($fonction == "modifier"){
-        //     if($id == "" || $nom == "" || is_string($id) || is_int($nom) ||preg_match('/\s/',$nom) || preg_match('/[0-9]/',$nom)){
-        //         $this->expectException(InvalidArgumentException::class);
-        //         $this->expectExceptionMessage("ne correspond pas aux attentes");
-        //     }
-        //     $this->carte->modifierCarte($id,$nom);
-        //     $stmt=$this->pdo->prepare("SELECT * FROM cartes WHERE id = :id");
-        //     $stmt->bindParam(":id",$id);
-        //     $cartes=$stmt->fetch(PDO::FETCH_ASSOC);
-        //     // var_dump($cartes);
-        //     $this->assertEquals($expected,$nom);
-        // }
-
+        //test de la méthode de modification de carte
+        else if($fonction == "modifier"){
+            $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price);
+            // Mise en place des exceptions
+            if($id == "" || $name == "" || is_string($id) || is_int($name) ||preg_match('/\s/',$name)){
+                $this->expectException(InvalidArgumentException::class);
+                $this->expectExceptionMessage("ne correspond pas aux attentes");
+            }
+        // appelation de la méthode
+            $this->carte->modificationCarte($cartes);
+            $stmt=$this->pdo->prepare("SELECT * FROM cartes WHERE id = :id");
+            $stmt->bindParam(":id",$id);
+            $cartes=$stmt->fetch(PDO::FETCH_ASSOC);
+            // var_dump($cartes);
+        // vérification si $expected est égale à $name
+            $this->assertEquals($expected,$id);
+        }
+        
+        //test de la méthode de trouver la carte par l'id
         else if($fonction == "listerCarteparId"){
+            //Mise en place des exceptions
             if($id == "" || is_string($id)){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("Id invalide");
             }
+            //appelation de la méthode
             $carte=$this->carte->listerCarteparId($id);
     
             $this->assertInstanceOf(Carte::class,$carte);
+            //vérification si $expected est égale à $name
             $this->assertEquals($expected,$id);
         }
         
     }
 
+    //tests des méthodes
     public static function Provider(){
         return[
             //modèle :
@@ -119,6 +139,9 @@ class CarteDAOTest extends TestCase{
             ["listerCarteParId",1,"1","","","","","","","","","",""],
             ["listerCarteParId","","bonjour","","","","","","","","","",""],
             ["listerCarteParId","1",1,"","","","","","","","","",""],
+
+            ["modifier","","","","","","","","","","","",""],
+            ["modifier",17,17,"totoa","","","","","","","","",""],
             
         ];
     }

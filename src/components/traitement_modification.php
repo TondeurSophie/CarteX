@@ -3,31 +3,12 @@ include_once("Carte.php");
 include_once("CarteDAO.php");
 include_once("config.php");
 
-//Soumission du formaulaire?
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//Objet carte en récupérant les données
-    $carte = new Carte(
-        $_POST["id"],
-        $_POST["name"],
-        $_POST["type"],
-        $_POST["frameType"],
-        $_POST["description"],
-        $_POST["race"],
-        $_POST["archetype"],
-        $_POST["ygoprodeck_url"],
-        $_POST["cards_sets"],
-        $_POST["cards_images"],
-        $_POST["cards_price"]
-    );
+// Récupérer les données du formulaire
+$idU = filter_input(INPUT_POST, 'id_utilisateur', FILTER_SANITIZE_NUMBER_INT);
+$pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
+$mail = filter_input(INPUT_POST, 'mail', FILTER_SANITIZE_EMAIL);
+$mdp = isset($_POST['mdp']) ? password_hash(filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING), PASSWORD_DEFAULT) : null;
+$role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
 
-    //Objet CarteDAO
-    $carteDAO = new CarteDAO($connexion);
-
-   //Modification de la carte
-$modificationReussie = $carteDAO->modificationCarte($carte);
-
-//Redirection vers la page listerCartes.php avec un message
-header("Location: http://localhost/Xcart/listerCarte.php");
-exit();
-}
-?>
+// Créer un objet Utilisateur
+$utilisateur = new Utilisateur($pseudo, $mail, $mdp, $role);

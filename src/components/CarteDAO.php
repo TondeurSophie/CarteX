@@ -61,6 +61,9 @@ class CarteDAO {
     }
 
     public function modificationCarte(Carte $carte) {
+        if($carte->getId() == "" || $carte->getName() == "" || is_string($carte->getId()) || is_int($carte->getName()) ||preg_match('/\s/',$carte->getName())){
+            throw new InvalidArgumentException("ne correspond pas aux attentes");
+        }
         try {
             $requete = $this->bdd->prepare("UPDATE cartes SET `name` = ?, `type` = ?, frameType = ?, `description` = ?, race = ?, archetype = ?, ygoprodeck_url = ?, cards_sets = ?, cards_images = ?, cards_price = ? WHERE id_carte = ?");
             $requete->execute([$carte->getName(), $carte->getType(), $carte->getFrameType(), $carte->getDescription(), $carte->getRace(), $carte->getArcheType(), $carte->getYgoprodeck_url(), $carte->getCards_sets(), $carte->getCards_images(), $carte->getCards_price(), $carte->getId_carte()]);
