@@ -1,12 +1,13 @@
 CREATE DATABASE carteX;
 USE carteX;
 
-create table utilisateurs (
-    id int primary key auto_increment,
-    pseudo varchar(100) not null,
-    mail varchar(100) not null,
-    mdp varchar(500) not null,
-    role int(11) not null);
+CREATE TABLE utilisateurs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(100) NOT NULL,
+    mail VARCHAR(100) NOT NULL,
+    mdp VARCHAR(500) NOT NULL,
+    role INT(11) NOT NULL
+);
 
 CREATE TABLE cartes (
     id_carte INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,12 +15,12 @@ CREATE TABLE cartes (
     name VARCHAR(100) NOT NULL,
     type VARCHAR(100) NOT NULL,
     frameType VARCHAR(100) NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     race VARCHAR(100) NOT NULL,
     archetype VARCHAR(100) NOT NULL,
     ygoprodeck_url VARCHAR(500) NOT NULL,
     cards_sets TEXT,
     cards_images TEXT,
     cards_price TEXT,
-    id_joueur int(11);
+    id_joueur INT(11)
 );
