@@ -75,7 +75,7 @@ class Carte {
         return $this->cards_images;
     }
 
-    public function getCard_price(){
+    public function getCards_price(){
         return $this->cards_price;
     }
 

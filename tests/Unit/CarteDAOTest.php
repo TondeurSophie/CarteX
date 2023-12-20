@@ -84,6 +84,17 @@ class CarteDAOTest extends TestCase{
         //     // var_dump($cartes);
         //     $this->assertEquals($expected,$nom);
         // }
+
+        else if($fonction == "listerCarteparId"){
+            if($id == "" || is_string($id)){
+                $this->expectException(InvalidArgumentException::class);
+                $this->expectExceptionMessage("Id invalide");
+            }
+            $carte=$this->carte->listerCarteparId($id);
+    
+            $this->assertInstanceOf(Carte::class,$carte);
+            $this->assertEquals($expected,$id);
+        }
         
     }
 
@@ -103,12 +114,12 @@ class CarteDAOTest extends TestCase{
             ["supprimer",1,1,1,"","","","","","","","",""],
 
 
-            // ["modifier","test",26,"test"],
-            // ["modifier","","",""],
-            // ["modifier","","1",""],
-            // ["modifier","",1,2],
-            // ["modifier"," ",1," "],
-            // ["modifier","1234",1,"1234"],
+            ["listerCarteParId",1, 1,"","","","","","","","","",""],
+            ["listerCarteParId","","","","","","","","","","","",""],
+            ["listerCarteParId",1,"1","","","","","","","","","",""],
+            ["listerCarteParId","","bonjour","","","","","","","","","",""],
+            ["listerCarteParId","1",1,"","","","","","","","","",""],
+            
         ];
     }
 
