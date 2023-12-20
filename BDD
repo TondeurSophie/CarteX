@@ -22,5 +22,6 @@ CREATE TABLE cartes (
     cards_sets TEXT,
     cards_images TEXT,
     cards_price TEXT,
-    id_joueur INT(11)
+    id_joueur INT(11),
+    FOREIGN KEY (id_joueur) REFERENCES utilisateurs(id)
 );
