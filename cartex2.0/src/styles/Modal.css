@@ -1,0 +1,124 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: rgb(111, 16, 16);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 60%; 
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modal-header button {
+    position: relative; 
+    padding: 10px 20px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .modal-header button::before {
+    content: "";
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 16px;
+    height: 2px;
+    background-color: white;
+    animation: crossAnimation 1s infinite; 
+  }
+  
+  @keyframes crossAnimation {
+    0% {
+      transform: translate(-50%, -50%) rotate(45deg); 
+      opacity: 0; 
+    }
+    50% {
+      opacity: 1; 
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(-45deg); 
+      opacity: 0; 
+    }
+  }
+  
+  .modal-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .card-image {
+    text-align: center;
+  }
+  
+  .card-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .card-image img:hover {
+    transform: scale(1.1);
+  }
+  
+  .card-info {
+    font-size: 1rem;
+    color: #ffffff;
+  }
+  
+  .card-info h2 {
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 2rem;
+  }
+  
+  .card-info p {
+    margin-bottom: 7px;
+    padding-bottom: 10px;
+    border-bottom: 6px solid rgb(0, 0, 0); 
+  }
+  
+  
+  .modal-content::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
