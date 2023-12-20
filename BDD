@@ -20,6 +20,6 @@ CREATE TABLE cartes (
     ygoprodeck_url VARCHAR(500) NOT NULL,
     cards_sets TEXT,
     cards_images TEXT,
-    cards_price TEXT
+    cards_price TEXT,
     id_joueur int(11);
 );
