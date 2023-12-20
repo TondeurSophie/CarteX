@@ -20,10 +20,10 @@ class CarteDAO {
 
         try {
             //Préparation de la requête d'insertion
-            $requete = $this->bdd->prepare("INSERT INTO cartes (id, `name`, `type`, frameType, `description`, race, archetype, ygoprodeck_url, cards_sets, cards_images, cards_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $requete = $this->bdd->prepare("INSERT INTO cartes (id, `name`, `type`, frameType, `description`, race, archetype, ygoprodeck_url, cards_sets, cards_images, cards_price,id_joueur) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)");
             
             //Exécution de la requête avec les valeurs de l'objet Carte
-            $requete->execute([$carte->getId(), $carte->getName(), $carte->getType(), $carte->getFrameType(), $carte->getDescription(), $carte->getRace(), $carte->getArcheType(), $carte->getYgoprodeck_url(), $carte->getCards_sets(), $carte->getCards_images(), $carte->getCards_price()]);
+            $requete->execute([$carte->getId(), $carte->getName(), $carte->getType(), $carte->getFrameType(), $carte->getDescription(), $carte->getRace(), $carte->getArcheType(), $carte->getYgoprodeck_url(), $carte->getCards_sets(), $carte->getCards_images(), $carte->getCards_price(), $carte->getIdJoueur()]);
             
             //Retourne vrai en cas de succès
             return true;
@@ -65,8 +65,8 @@ class CarteDAO {
             throw new InvalidArgumentException("ne correspond pas aux attentes");
         }
         try {
-            $requete = $this->bdd->prepare("UPDATE cartes SET `name` = ?, `type` = ?, frameType = ?, `description` = ?, race = ?, archetype = ?, ygoprodeck_url = ?, cards_sets = ?, cards_images = ?, cards_price = ? WHERE id_carte = ?");
-            $requete->execute([$carte->getName(), $carte->getType(), $carte->getFrameType(), $carte->getDescription(), $carte->getRace(), $carte->getArcheType(), $carte->getYgoprodeck_url(), $carte->getCards_sets(), $carte->getCards_images(), $carte->getCards_price(), $carte->getId_carte()]);
+            $requete = $this->bdd->prepare("UPDATE cartes SET `name` = ?, `type` = ?, frameType = ?, `description` = ?, race = ?, archetype = ?, ygoprodeck_url = ?, cards_sets = ?, cards_images = ?, cards_price = ? , id_joueur = ? WHERE id_carte = ?");
+            $requete->execute([$carte->getName(), $carte->getType(), $carte->getFrameType(), $carte->getDescription(), $carte->getRace(), $carte->getArcheType(), $carte->getYgoprodeck_url(), $carte->getCards_sets(), $carte->getCards_images(), $carte->getCards_price(), $carte->getIdJoueur(),$carte->getId_carte()]);
             return true;
         } catch (PDOException $e) {
             echo "Erreur de modification de la carte : " . $e->getMessage();
@@ -128,7 +128,8 @@ class CarteDAO {
                     $resultat["ygoprodeck_url"],
                     $resultat["cards_sets"],
                     $resultat["cards_images"],
-                    $resultat["cards_price"]
+                    $resultat["cards_price"],
+                    $resultat["id_joueur"]
                 );
             } else {
                 return null;
