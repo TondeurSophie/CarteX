@@ -33,8 +33,8 @@ class UtilisateurDAO {
     //Modifie un utilisateur dans la base de données
     public function modificationUtilisateur(Utilisateur $utilisateur) {
         try {
-            $requete = $this->bdd->prepare("UPDATE utilisateurs SET pseudo = ? WHERE id = ?");
-            $requete->execute([$utilisateur->getPseudo(), $utilisateur->getId()]);
+            $requete = $this->bdd->prepare("UPDATE utilisateurs SET pseudo = ?, mail = ?, mdp = ?, `role` = ? WHERE id = ?");
+            $requete->execute([$utilisateur->getPseudo(), $utilisateur->getMail(), $utilisateur->getMdp(), $utilisateur->getRole(), $utilisateur->getId()]);
             return true;
         } catch (PDOException $e) {
             echo "Erreur de modification de l'utilisateur : " . $e->getMessage();
@@ -48,6 +48,17 @@ class UtilisateurDAO {
             return $requete->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Erreur de récupération des utilisateurs: " . $e->getMessage();
+            return [];
+        }
+    }
+    //Liste les utilisateurs par l'id
+    public function listerUtilisateursParID($id) {
+        try {
+            $requete = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE id = ?");
+            $requete->execute([$id]);
+            return $requete->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur de récupération de l'utilisateur par ID : " . $e->getMessage();
             return [];
         }
     }
