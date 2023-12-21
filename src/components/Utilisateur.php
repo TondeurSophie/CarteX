@@ -10,7 +10,8 @@ class Utilisateur {
 
     //Fonction en public car elles sont appelées en dehors de la classe
     //Fonction pour créer les objets
-    public function __construct($pseudo, $mail, $mdp, $role) {
+    public function __construct($id, $pseudo, $mail, $mdp, $role) {
+        $this->id = $id;
         $this->pseudo = $pseudo;
         $this->mail = $mail;
         $this->mdp = $mdp;

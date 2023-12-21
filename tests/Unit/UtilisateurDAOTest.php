@@ -37,12 +37,12 @@ class UtilisateurDAOTest extends TestCase{
     /**
      * @dataProvider Provider
      */
-    public function testUtilisateur($fonction,$expected,$idUtilisateur,$pseudo, $mail, $mdp, $role){
+    public function testUtilisateur($fonction,$expected,$idUtilisateur,$id,$pseudo, $mail, $mdp, $role){
         
         //test de la méthode d'ajout de carte
         if($fonction == "ajouter"){
             //création de l'objet
-            $utilisateurs=new Utilisateur($pseudo, $mail, $mdp, $role);
+            $utilisateurs=new Utilisateur($id,$pseudo, $mail, $mdp, $role);
             //Mise en place des exceptions
             if($pseudo == "" || is_int($pseudo) || $mail == "" || is_int($mail)|| $mdp == "" || is_int($mdp) || is_string($role) || preg_match('/\s/',$mail) ){
                 $this->expectException(InvalidArgumentException::class);
@@ -66,11 +66,12 @@ class UtilisateurDAOTest extends TestCase{
             if(is_string($idUtilisateur)){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("erreur de format des informations");
+                throw new InvalidArgumentException("erreur de format des informations");
             }
             //création de l'objet
             // $utilisateurs=new Utilisateur($pseudo, $mail, $mdp, $role);
             //appelation de la méthode
-            $this->utili->supprimerUtilisateurParId($idUtilisateur);
+            $this->utili->supprimerUtilisateur($idUtilisateur);
             $stmt = $this->pdo->prepare("SELECT * FROM utilisateurs WHERE id = :id");
             $stmt->bindParam(":id",$idUtilisateur);
             $$idUtilisateur=$stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,11 +82,12 @@ class UtilisateurDAOTest extends TestCase{
         }
         //test de la méthode de modification de utilisateurs
         else if($fonction == "modifier"){
-            $utilisateurs=new Utilisateur($pseudo, $mail, $mdp, $role);
+            $utilisateurs=new Utilisateur($id,$pseudo, $mail, $mdp, $role);
             // Mise en place des exceptions
             if($pseudo == "" || is_int($pseudo) || $mail == "" || is_int($mail)|| $mdp == "" || is_int($mdp) || is_string($role) || preg_match('/\s/',$mail) ){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("champs invalide");
+                throw new InvalidArgumentException("champs invalide");
             }
         // appelation de la méthode
             $this->utili->modificationUtilisateur($utilisateurs);
@@ -103,9 +105,10 @@ class UtilisateurDAOTest extends TestCase{
             if($idUtilisateur == "" || is_string($idUtilisateur)){
                 $this->expectException(InvalidArgumentException::class);
                 $this->expectExceptionMessage("Id invalide");
+                throw new InvalidArgumentException("Id invalide");
             }
             //appelation de la méthode
-            $utili=$this->utili->listerUtilisateursParID($idUtilisateur);
+            $utili=$this->utili->getUtilisateurById($idUtilisateur);
     
             $this->assertInstanceOf(Utilisateur::class,$utili);
             //vérification si $expected est égale à $pseudo
@@ -118,26 +121,26 @@ class UtilisateurDAOTest extends TestCase{
     public static function Provider(){
         return[
             //modèle :
-            // ["",$expected,$idUtilisateur,$pseudo, $mail, $mdp, $role],
-            // ["","","","", "", "",""],
+            // ["",$expected,$idUtilisateur,$id,$pseudo, $mail, $mdp, $role],
+            // ["","","","", "", "","",""],
             
-            ["ajouter","","","", "", "",""],
-            // ["ajouter","titi",15,"titi", "titi@mail.fr", "titititi",1],
-            // ["ajouter","a","","a", "a@aaa.com", "aaaaaa",1],
-            ["ajouter","a","","a", "a@aaa.com", "aaaaaa","1"],
-            ["ajouter","a","","a", "a@aa a.com", "aaaaaa",1],
+            ["ajouter","","","","", "", "",""],
+            // ["ajouter","titi",15,"","titi", "titi@mail.fr", "titititi",1],
+            // ["ajouter","a","","","a", "a@aaa.com", "aaaaaa",1],
+            ["ajouter","a","","","a", "a@aaa.com", "aaaaaa","1"],
+            ["ajouter","a","","","a", "a@aa a.com", "aaaaaa",1],
 
 
-            ["supprimer","","","", "", "",""],
-            ["supprimer",18,18,"", "", "",""],
-            ["supprimer","17","17","", "", "",""],
+            ["supprimer","","","","", "", "",""],
+            ["supprimer",18,18,"","", "", "",""],
+            ["supprimer","17","17","","", "", "",""],
 
 
-            ["listerUtilisateursParID","", "","","","","","","","","","",""],
-            // ["listerUtilisateursParID",12, 12,"","","","","","","","","",""],
+            ["listerUtilisateursParID","", "","","","","","","","","","","",""],
+            // ["listerUtilisateursParID",12, 12,"","","","","","","","","","",""],
             
-            ["modifier","","","", "", "",""],
-            ["modifier",2,"",2, "titi@s.fr", "",""],
+            ["modifier","","","", "", "","",""],
+            ["modifier",2,"","",2, "titi@s.fr", "",""],
         ];
     }
 

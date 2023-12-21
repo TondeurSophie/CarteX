@@ -18,7 +18,8 @@ class Carte {
 
     //Fonction en public car elles sont appelées en dehors de la classe
     //Fonction pour créer les objets
-    public function __construct($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur) {
+    public function __construct($id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur) {
+        $this->id_carte=$id_carte;
         $this->id = $id;
         $this->name = $name;
         $this->type = $type;
