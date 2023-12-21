@@ -1,91 +1,53 @@
 <?php
-// Inclusion de la connexion à la base de données et des classes nécessaires
-// require_once 'connexionBDD.php'; // Remplacez avec le chemin réel de votre fichier de connexion
-require_once 'CarteDAO.php'; // Votre classe CarteDAO
-require_once 'Carte.php'; // Votre classe Carte
-
-$bdd = new PDO('mysql:host=localhost;dbname=cartex;charset=utf8', 'root', 'password');
-// Création d'un objet CarteDAO pour interagir avec la base de données
-$carteDAO = new CarteDAO($bdd); // Assurez-vous que $bdd est votre objet PDO de connexion à la base de données
-
-// Récupération de toutes les cartes
-$cartes = $carteDAO->listerCartes();
-
+include_once("Carte.php");
+include_once("CarteDAO.php");
+include_once("config.php");
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des Cartes</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        body {
-            font-family: sans-serif;
-            background-color: #f1f1f1;
-        }
-        h1 {
-            text-align: center;
-        }
-        table {
-            margin: auto;
-        }
-        td {
-            padding: 5px;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #ddd;
-        }
-        input[type=submit] {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            text-decoration: none;
-            margin: 4px 2px;
-            cursor: pointer;
-        }        
-
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des cartes</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="supprimerCarte.js"></script>
 </head>
 <body>
-    <h1>Liste des Cartes</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($cartes as $carte) : ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($carte['id_carte']); ?></td>
-                    <td><?php echo htmlspecialchars($carte['name']); ?></td>
-                    <td>
-                        <!-- Bouton de suppression -->
-                        <form action="supprimerCarte.php" method="POST">
-                            <input type="hidden" name="id_carte" value="id_carte"/>
-                            <input type="submit" value="Supprimer"/>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <h1>Liste des cartes</h1>
+
+    <?php
+    $carteDAO = new CarteDAO($connexion);
+    $cartes = $carteDAO->listerCartes();
+
+    //Cartes sont disponibles
+    if ($cartes) {
+        foreach ($cartes as $carte) {
+            //Informations de chaque carte
+            echo "<p>ID Carte : " . $carte['id_carte'] . "</p>";
+            // echo "<p>ID Joueur : " . $carte['id_joueur'] . "</p>";
+            echo "<p>Nom : " . $carte['name'] . "</p>";
+            echo "<p>Type : " . $carte['type'] . "</p>";
+            echo "<p>Frame Type : " . $carte['frameType'] . "</p>";
+            echo "<p>Description : " . $carte['description'] . "</p>";
+            echo "<p>Race : " . $carte['race'] . "</p>";
+            echo "<p>Archetype : " . $carte['archetype'] . "</p>";
+            echo "<p>URL Ygoprodeck : " . $carte['ygoprodeck_url'] . "</p>";
+            echo "<p>Cards Sets : " . $carte['cards_sets'] . "</p>";
+            echo "<p>Cards Images : " . $carte['cards_images'] . "</p>";
+            echo "<p>Cards Price : " . $carte['cards_price'] . "</p>";
+
+            //Bouton de modification avec l'ID de la carte amenant vers la modifierCarte.php
+            echo "<button><a href='modifierCarte.php?id=" . $carte['id_carte'] . "'>Modifier</a></button>";
+            //Bouton de suppression avec l'ID de la carte
+            echo "<button class='supprimer-carte' data-id='" . $carte['id_carte'] . "'>Supprimer</button>";
+
+            echo "<hr>";
+        }
+    } else {
+        //Aucune carte n'est disponible
+        echo "<p>Aucune carte n'est disponible.</p>";
+    }
+    ?>
 </body>
 </html>

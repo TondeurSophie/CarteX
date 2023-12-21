@@ -20,8 +20,12 @@ function App() {
   const handleSearch = (e) => {
     e.preventDefault();
     navigate(`/rechercher?nom=${encodeURIComponent(searchTerm)}`);
-
   };
+  const handleTrie = (e) => {
+    const selectedOptionValue = e.target.value;
+    navigate(`/rechercher?nom=${encodeURIComponent(selectedOptionValue)}`);
+  };
+
   const redirectToPhpPage = () => {
     let href = "http://localhost/Projet/front/src/components/ajoutCarte.php";
     window.location.href =  href;
@@ -32,6 +36,10 @@ function App() {
   };
   const redirectToPhpPageListeUtilisateur = () => {
     let href = "http://localhost/Projet/front/src/components/admin.php";
+    window.location.href =  href;
+  };
+  const redirectToPhpPageModifUtilisateur = () => {
+    let href = "http://localhost/Projet/front/src/components/listerCarte.php";
     window.location.href =  href;
   };
 
@@ -66,12 +74,21 @@ function App() {
           </form>      
           </div>
 
+          <select onChange={handleTrie}>
+            <option value="ordreaz">A-Z</option>
+            <option value="ordreprice">prix</option>
+            <option value="ordretype">type</option>
+          </select>
+
         <div className="navbar-buttons">
         {isLoggedIn && (
         <button onClick={redirectToPhpPage}>Ajouter une carte (PHP)</button>
         )}
         {isLoggedIn && (
         <button onClick={redirectToPhpPageListeCarte}>Lister cartes (PHP)</button>
+        )}
+        {isLoggedIn && (
+        <button onClick={redirectToPhpPageModifUtilisateur}>Modifier cartes (PHP)</button>
         )}
         {isRoleIn && (
         <button onClick={redirectToPhpPageListeUtilisateur}>Gestion utilisateurs (PHP)</button>

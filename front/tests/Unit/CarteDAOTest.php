@@ -37,12 +37,12 @@ class CarteDAOTest extends TestCase{
     /**
      * @dataProvider Provider
      */
-    public function testCarte($fonction,$expected,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur){
+    public function testCarte($fonction,$expected,$id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur){
         
         //test de la méthode d'ajout de carte
         if($fonction == "ajouter"){
             //création de l'objet
-            $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
+            $cartes=new Carte($id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
             //Mise en place des exceptions
             if($name == "" || is_int($name) || is_int($type)|| is_int($frameType)|| is_int($description)|| is_int($race)|| is_int($archetype)|| is_int($ygoprodeck_url)|| is_int($cards_sets)|| is_int($cards_images)|| is_int($cards_price) ){
                 $this->expectException(InvalidArgumentException::class);
@@ -71,7 +71,7 @@ class CarteDAOTest extends TestCase{
                 $this->expectExceptionMessage("erreur de format des informations");
             }
             //création de l'objet
-            $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
+            $cartes=new Carte($id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
             //appelation de la méthode
             $this->carte->supprimerCarte($cartes);
             $stmt = $this->pdo->prepare("SELECT * FROM cartes WHERE id = :id");
@@ -84,7 +84,7 @@ class CarteDAOTest extends TestCase{
         }
         //test de la méthode de modification de carte
         else if($fonction == "modifier"){
-            $cartes=new Carte($id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
+            $cartes=new Carte($id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur);
             // Mise en place des exceptions
             if($id == "" || $name == "" || is_string($id) || is_int($name) ||preg_match('/\s/',$name)){
                 $this->expectException(InvalidArgumentException::class);
@@ -121,27 +121,27 @@ class CarteDAOTest extends TestCase{
     public static function Provider(){
         return[
             //modèle :
-            // ["","expected",id, "name", "type", "frameType", "description", "race", "archetype", "ygoprodeck_url", "cards_sets", "cards_images", "cards_price"],
+            // ["","expected",$id_carte,$id, $name, $type, $frameType, $description, $race, $archetype, $ygoprodeck_url, $cards_sets, $cards_images, $cards_price, $id_joueur],
             
-            // ["ajouter","test",1,"test","feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price",""],
-            ["ajouter",1,2,1,"feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price",""],
-            ["ajouter","test2",2,"test2",2,5,1,9,10,0,2,6,8,""],
-            ["ajouter","1",3,"1","feu","nk ut","sdqfgdhf","ogre g","qsdf","url","s","image","price",""],
+            // ["ajouter","test","",1,"test","feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price",""],
+            ["ajouter",1,"",2,1,"feu","d","sdqfgdhf","ogre","qsdf","url","s","image","price",""],
+            ["ajouter","test2","",2,"test2",2,5,1,9,10,0,2,6,8,""],
+            ["ajouter","1","",3,"1","feu","nk ut","sdqfgdhf","ogre g","qsdf","url","s","image","price",""],
 
 
-            // ["supprimer","test",1,"test","","","","","","","","","",""],
-            ["supprimer","test","1","test","","","","","","","","","",""],
-            ["supprimer",1,1,1,"","","","","","","","","",""],
+            // ["supprimer","test","",1,"test","","","","","","","","","",""],
+            ["supprimer","test","","1","test","","","","","","","","","",""],
+            ["supprimer",1,"",1,1,"","","","","","","","","",""],
 
 
-            ["listerCarteParId",1, 1,"","","","","","","","","","",""],
-            ["listerCarteParId","","","","","","","","","","","","",""],
-            ["listerCarteParId",1,"1","","","","","","","","","","",""],
-            ["listerCarteParId","","bonjour","","","","","","","","","","",""],
-            ["listerCarteParId","1",1,"","","","","","","","","","",""],
+            ["listerCarteParId",1,"", 1,"","","","","","","","","","",""],
+            ["listerCarteParId","","","","","","","","","","","","","",""],
+            ["listerCarteParId",1,"","1","","","","","","","","","","",""],
+            ["listerCarteParId","","","bonjour","","","","","","","","","","",""],
+            ["listerCarteParId","1","",1,"","","","","","","","","","",""],
 
-            ["modifier","","","","","","","","","","","","",""],
-            ["modifier",17,17,"totoa","","","","","","","","","",""],
+            ["modifier","","","","","","","","","","","","","",""],
+            ["modifier",17,"",17,"totoa","","","","","","","","","",""],
             
         ];
     }

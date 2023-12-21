@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $roleValue = ($role === 'administrateur') ? 1 : 2;
 
     //Création d'un objet Utilisateur
-    $nouvelUtilisateur = new Utilisateur($pseudo, $mail, $mdp, $roleValue);
+    $nouvelUtilisateur = new Utilisateur(0, $pseudo, $mail, $mdp, $roleValue);
 
     // Création d'un objet UtilisateurDAO
     $utilisateurDAO = new UtilisateurDAO($connexion);

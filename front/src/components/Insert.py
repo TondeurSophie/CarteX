@@ -1,30 +1,34 @@
 import mysql.connector
 import requests
 import re
+import random  # Ajoutez cette ligne pour utiliser la bibliothèque random
 
 def remove_special_characters(text):
     return re.sub(r'[^\x00-\x7F]+', '', text)
 
-# connection à la BDD
+# connection à la base de donnée
 try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
         password="password",
-        database="cartex"
+        database="carteX"
     )
     
     cursor = db.cursor()
 
-# connection à l'API
+# connexion à l'API
     api_url = "https://db.ygoprodeck.com/api/v7/cardinfo.php"
     response = requests.get(api_url)
 
     if response.status_code == 200:
-        data = response.json().get("data", [])[:300]  # Limiter à 300 premières cartes
+        data = response.json().get("data", [])
 
-    # récupération des infos de chaques cartes
-        for card in data:
+        # Mélanger la liste de cartes de manière aléatoire
+        random.shuffle(data)
+
+        # Limiter à 300 cartes
+        for index, card in enumerate(data[:300]):  # Utilisez la liste mélangée
             card_id = card.get("id", "N/A")
             card_name = remove_special_characters(card.get("name", "N/A"))
             card_type = remove_special_characters(card.get("type", "N/A"))
@@ -46,8 +50,8 @@ try:
             insert_query = "INSERT INTO cartes (id, name, type, frameType, description, race, archetype, ygoprodeck_url, cards_sets, cards_images, cards_price) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             values = (card_id, card_name, card_type, frame_type, card_description, card_race, archetype, ygoprodeck_url, card_sets_info, card_image_url, cardmarket_price)
             cursor.execute(insert_query, values)
-            db.commit()
-        
+
+        db.commit()
         print("Données insérées avec succès dans la base de données.")
 
 except mysql.connector.Error as err:

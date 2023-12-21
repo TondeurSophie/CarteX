@@ -3,26 +3,18 @@ include_once("Carte.php");
 include_once("CarteDAO.php");
 include_once("config.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["carte_name"])) {
-    //Création d'un nouvel objet Carte afin de pouvoir le rechercher
-    $carte = new Carte(null, $_POST["carte_name"], null, null, null, null, null, null, null, null, null,null);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_carte"])) {
+    $id_carte = $_POST["id_carte"];
 
-    //Création de l'objet CarteDAO
     $carteDAO = new CarteDAO($connexion);
 
     //Suppression de la carte
-    $suppressionReussie = $carteDAO->supprimerCarte($carte);
+    $suppressionReussie = $carteDAO->supprimerCarte($id_carte);
 
-    //Redirection
-    if ($suppressionReussie) {
-        header("Location: listerCartes.php?message=La carte a été supprimée avec succès");
-    } else {
-        header("Location: listerCartes.php?message=Echec de la suppression de la carte");
-    }
-    exit();
+    //Messages d'erreur ou de succès
+    echo $suppressionReussie ? "La carte a été supprimée avec succès." : "Erreur lors de la suppression de la carte.";
 } else {
-    //Redirection
-    header("Location: listerCartes.php");
-    exit();
+    
+    echo "Erreur: Paramètres manquants.";
 }
 ?>

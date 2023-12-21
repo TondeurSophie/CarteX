@@ -190,7 +190,22 @@ app.get('/api/recherche/cartes', async (req, res) => {
 
     try {
         conn = await pool.getConnection();
-        const query = 'SELECT * FROM cartes WHERE name LIKE ?';
+        let query;
+        
+        if (searchTerm.toLowerCase() === "ordreaz") {
+            // Si la recherche est "sidick", triez par ordre alphabétique
+            query = 'SELECT * FROM cartes ORDER BY name ASC';
+        } else if (searchTerm.toLowerCase() === "ordretype") {
+            // Si la recherche est "sidick", triez par ordre alphabétique
+            query = 'SELECT * FROM cartes ORDER BY type ASC';
+        } else if (searchTerm.toLowerCase() === "ordreprice") {
+            // Si la recherche est "sidick", triez par ordre alphabétique
+            query = 'SELECT * FROM cartes ORDER BY cards_price ASC';
+        } else {
+            // Sinon, utilisez une requête LIKE avec la recherche partielle
+            query = 'SELECT * FROM cartes WHERE name LIKE ?';
+        }
+
         const results = await conn.query(query, [`%${searchTerm}%`]); // Utilisez % pour une recherche partielle
         res.json(results);
     } catch (error) {
@@ -200,6 +215,7 @@ app.get('/api/recherche/cartes', async (req, res) => {
         if (conn) conn.release();
     }
 });
+
 
 //ajout de cartes
 app.post('/api/cartes', (req, res) => {

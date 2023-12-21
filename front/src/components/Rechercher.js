@@ -9,8 +9,6 @@ function useQuery() {
 }
 
 function Rechercher() {
-    const [currentPage, setCurrentPage] = useState(0);
-    const cardsPerPage = 9;
     const [cards, setCards] = useState([]); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null); 
@@ -20,7 +18,6 @@ function Rechercher() {
       const params = new URLSearchParams(location.search);
       const searchTerm = params.get('nom');
   
-      //recherche par nom
       if (searchTerm) {
         fetch(`http://localhost:3010/api/recherche/cartes?nom=${searchTerm}`)
           .then(response => response.json())
@@ -28,47 +25,43 @@ function Rechercher() {
             setCards(data);}) 
           .catch(error => console.error('Error:', error));
       }
+      if (searchTerm == "AZ") {
+        fetch(`http://localhost:3010/api/recherche/cartes?nom=AZ`)
+          .then(response => response.json())
+          .then(data => {console.log("Résultats de recherche :", data); 
+            setCards(data);}) 
+          .catch(error => console.error('Error:', error));
+      }
     }, [location]);
   
-//bouton suivant
-  const handleNextClick = () => {
-    setCurrentPage(currentPage + 1);
-  };
 
-  //bouton precedent
-  const handlePreviousClick = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 1);
-  };
-
-  //bouton de savegarde des cartes
   const isCardSaved = (card) => {
     const savedCards = JSON.parse(localStorage.getItem('savedCardLinks')) || [];
     return savedCards.some(savedCard => savedCard.link === card.cards_images);
   };
 
-  //bouton de savegarde des cartes
   const handleCardClick = (e, card) => {
-    e.stopPropagation();
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+    
     if (isCardSaved(card)) return;
-
+  
     const cardData = {
       link: card.cards_images,
       name: card.name
     };
-
-    //sauvegarde dans le localStorage (pas permanent)
+  
     const savedCards = JSON.parse(localStorage.getItem('savedCardLinks')) || [];
     savedCards.push(cardData);
     localStorage.setItem('savedCardLinks', JSON.stringify(savedCards));
   };
 
-  //ouvrir les détails
   const openModal = (card) => {
     setSelectedCard(card);
     setIsModalOpen(true);
   };
 
-  //fermer les détails
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -82,15 +75,20 @@ function Rechercher() {
             <div className="innerCard" onClick={() => openModal(card)}>
               <div className="frontSide" style={{ backgroundImage: `url('${back_x}')`, backgroundSize: '100% 100%' }}>
                 <p className="title">Yu-Gi-Oh</p>
+                                <label className="ui-bookmark">
+                <input type="checkbox" checked={isCardSaved(card)} onChange={(e) => handleCardClick(e, card)} />
+                <div className="bookmark">
+                  <svg className="contoursvg" viewBox="0 0 29 50">
+                    <g>
+                      <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                    </g>
+                  </svg>
+                </div>
+              </label>
                 <p>{card.name}</p>
-                {!isCardSaved(card) && (
-                  <button className="button-savef" onClick={(e) => handleCardClick(e, card)}>Save</button>
-                )}
+
               </div>
               <div className="backSide" style={{ background: `url('${card.cards_images}') no-repeat center center / cover` }}>
-                {!isCardSaved(card) && (
-                  <button className='button_save' onClick={(e) => handleCardClick(e, card)}>Save</button>
-                )}
               </div>
 
             </div>
@@ -102,10 +100,9 @@ function Rechercher() {
           isOpen={isModalOpen}
           onClose={closeModal}
           card={selectedCard}
+          onSaveCard={handleCardClick}
         />
       )}
-      <button onClick={handlePreviousClick} disabled={currentPage === 0}>Précédent</button>
-      <button onClick={handleNextClick}>Suivant</button>
     </div>
   );
 }

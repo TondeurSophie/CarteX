@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/connexion.css';
 import image_sign from "../images/sign_in.jpg";
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function Connexion() {
   const [donneesConn, setDonneesConn] = useState({
@@ -33,6 +34,11 @@ function Connexion() {
         console.log(data.id);
         console.log(data);
         console.log("Connexion rÃ©ussie");
+        Cookies.set('role', data.role);
+        //sécurité de la plateforme
+        const cookieRole = Cookies.get('role');
+        console.log('Valeur du cookie role :', cookieRole);
+        
         window.location.reload()
         window.location.href = './';
 
