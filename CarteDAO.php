@@ -29,13 +29,13 @@ class CarteDAO {
         }
     }
 
-    public function supprimerCarte(Carte $carte) {
+    public function supprimerCarte($id_carte) {
         try {
-            //Préparation de la requête d'insertion
-            $requete = $this->bdd->prepare("DELETE FROM cartes WHERE `name` = ?");
+            //Préparation de la requête de suppression
+            $requete = $this->bdd->prepare("DELETE FROM cartes WHERE id_carte = ?");
             
-            //Exécution de la requête avec les valeurs de l'objet Carte
-            $requete->execute([$carte->getName()]);
+            //Exécution de la requête avec l'ID de la carte
+            $requete->execute([$id_carte]);
             
             // Retourne vrai en cas de succès
             return true;
