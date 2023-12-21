@@ -13,6 +13,7 @@ export default function Profil() {
 
    const recupUtilisateur = async ()=>{
     const id=localStorage.getItem("key") // récupération de l'id de l'utilisateur connecté
+    const role=localStorage.getItem("role")
 
     //Chargement BDD
     await fetch(`http://localhost:3010/utilisateurs/${id}`, 
@@ -41,7 +42,9 @@ export default function Profil() {
     //permet de modifier le pseudo de l'utilisateur
     const pseudoModif = async ()=>{
         const id=localStorage.getItem("key")
+        const role=localStorage.getItem("role")
         console.log(id)
+        console.log(role)
         try {
             const reponse = await fetch(`http://localhost:3010/api/utilisateurModif/${id}`, 
             {method: "PUT", headers:{'Content-Type':'application/json'} ,body: JSON.stringify(donneesModif)})

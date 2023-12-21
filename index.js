@@ -123,6 +123,7 @@ app.post('/utilisateursBDD', async(req,res) => {
         //je selectionne tous de la table utilisateurs lorsque l'email correspond à l'un des "profil"
         const rows = await conn.query('select * from utilisateurs where mail = ? ', [mail]);
         console.log(rows)
+        console.log(rows)
         if (rows.length > 0) {
             const hash = rows[0].mdp;
             //compare mdp avec hash
@@ -130,7 +131,8 @@ app.post('/utilisateursBDD', async(req,res) => {
             console.log(match);
             if (match){
                 console.log("Vous êtes connecté")
-                res.status(200).json({id:rows[0].id});
+                res.status(200).json({role:rows[0].role, id:rows[0].id});
+
             }else{
                 console.log("le mdp de correspond pas")
                 res.status(401).json({error:"mdp incorrect"})

@@ -20,6 +20,7 @@ function Rechercher() {
       const params = new URLSearchParams(location.search);
       const searchTerm = params.get('nom');
   
+      //recherche par nom
       if (searchTerm) {
         fetch(`http://localhost:3010/api/recherche/cartes?nom=${searchTerm}`)
           .then(response => response.json())
@@ -29,20 +30,23 @@ function Rechercher() {
       }
     }, [location]);
   
-
+//bouton suivant
   const handleNextClick = () => {
     setCurrentPage(currentPage + 1);
   };
 
+  //bouton precedent
   const handlePreviousClick = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
+  //bouton de savegarde des cartes
   const isCardSaved = (card) => {
     const savedCards = JSON.parse(localStorage.getItem('savedCardLinks')) || [];
     return savedCards.some(savedCard => savedCard.link === card.cards_images);
   };
 
+  //bouton de savegarde des cartes
   const handleCardClick = (e, card) => {
     e.stopPropagation();
     if (isCardSaved(card)) return;
@@ -52,16 +56,19 @@ function Rechercher() {
       name: card.name
     };
 
+    //sauvegarde dans le localStorage (pas permanent)
     const savedCards = JSON.parse(localStorage.getItem('savedCardLinks')) || [];
     savedCards.push(cardData);
     localStorage.setItem('savedCardLinks', JSON.stringify(savedCards));
   };
 
+  //ouvrir les détails
   const openModal = (card) => {
     setSelectedCard(card);
     setIsModalOpen(true);
   };
 
+  //fermer les détails
   const closeModal = () => {
     setIsModalOpen(false);
   };

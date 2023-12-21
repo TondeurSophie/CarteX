@@ -29,7 +29,9 @@ function Connexion() {
       if (response.status === 200) {
         const data = await response.json();
         localStorage.setItem("key", data.id);
+        localStorage.setItem("role", data.role);
         console.log(data.id);
+        console.log(data);
         console.log("Connexion rÃ©ussie");
         window.location.reload()
         window.location.href = './';

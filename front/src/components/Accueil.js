@@ -11,6 +11,7 @@ export default function Accueil() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
+  //lister les cartes de la base de données
   useEffect(() => {
     fetch('http://localhost:3010/api/cartes')
       .then((response) => response.json())
@@ -24,19 +25,23 @@ export default function Accueil() {
       .catch((error) => console.error('Error fetching data:', error));
   }, [currentPage]);
 
+  //bouton suivant
   const handleNextClick = () => {
     setCurrentPage(currentPage + 1);
   };
 
+  //bouton précédent
   const handlePreviousClick = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
+  //sauvegarde des cartes
   const isCardSaved = (card) => {
     const savedCards = JSON.parse(localStorage.getItem('savedCardLinks')) || [];
     return savedCards.some(savedCard => savedCard.link === card.cards_images);
   };
 
+  //bouton de sauvegarde des cartes
   const handleCardClick = (e, card) => {
     e.stopPropagation();
     if (isCardSaved(card)) return;
@@ -51,11 +56,13 @@ export default function Accueil() {
     localStorage.setItem('savedCardLinks', JSON.stringify(savedCards));
   };
 
+  //affiche le détail des cartes
   const openModal = (card) => {
     setSelectedCard(card);
     setIsModalOpen(true);
   };
 
+  //ferme le détail des cartes
   const closeModal = () => {
     setIsModalOpen(false);
   };

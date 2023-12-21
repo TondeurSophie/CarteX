@@ -16,9 +16,23 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("key") !== null;
+  const isRoleIn = localStorage.getItem("role") == 2;
   const handleSearch = (e) => {
     e.preventDefault();
     navigate(`/rechercher?nom=${encodeURIComponent(searchTerm)}`);
+
+  };
+  const redirectToPhpPage = () => {
+    let href = "http://localhost/Projet/front/src/components/ajoutCarte.php";
+    window.location.href =  href;
+  };
+  const redirectToPhpPageListeCarte = () => {
+    let href = "http://localhost/Projet/front/src/components/listerCarte.php";
+    window.location.href =  href;
+  };
+  const redirectToPhpPageListeUtilisateur = () => {
+    let href = "http://localhost/Projet/front/src/components/admin.php";
+    window.location.href =  href;
   };
 
   return (
@@ -53,7 +67,16 @@ function App() {
           </div>
 
         <div className="navbar-buttons">
-          {isLoggedIn && (
+        {isLoggedIn && (
+        <button onClick={redirectToPhpPage}>Ajouter une carte (PHP)</button>
+        )}
+        {isLoggedIn && (
+        <button onClick={redirectToPhpPageListeCarte}>Lister cartes (PHP)</button>
+        )}
+        {isRoleIn && (
+        <button onClick={redirectToPhpPageListeUtilisateur}>Gestion utilisateurs (PHP)</button>
+        )}  
+        {isLoggedIn && (
             <Link to="save">
               <img src={save} alt="save" />
             </Link>

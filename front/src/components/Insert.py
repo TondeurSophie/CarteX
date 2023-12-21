@@ -5,6 +5,7 @@ import re
 def remove_special_characters(text):
     return re.sub(r'[^\x00-\x7F]+', '', text)
 
+# connection à la BDD
 try:
     db = mysql.connector.connect(
         host="localhost",
@@ -15,12 +16,14 @@ try:
     
     cursor = db.cursor()
 
+# connection à l'API
     api_url = "https://db.ygoprodeck.com/api/v7/cardinfo.php"
     response = requests.get(api_url)
 
     if response.status_code == 200:
         data = response.json().get("data", [])[:300]  # Limiter à 300 premières cartes
 
+    # récupération des infos de chaques cartes
         for card in data:
             card_id = card.get("id", "N/A")
             card_name = remove_special_characters(card.get("name", "N/A"))
