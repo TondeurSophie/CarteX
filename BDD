@@ -27,3 +27,12 @@ CREATE TABLE cartes (
 );
 
 Insert into utilisateurs values (1, "admin", "admin@admin.com", "adminadmin", 2);
+
+INSERT INTO cartes (id, name, type, frameType, description, race, archetype, ygoprodeck_url, cards_sets, cards_images, cards_price, id_joueur) VALUES
+    -> (301, 'Carte Alpha', 'ADMIN', 'TOUT LES DROITS', 'Gère l\'ensemble du système', 'Spécial', 'PUISSANCE', 'https://admin.com', 'Set Alpha', 'http://localhost/images/image_special.jpg', '1 000 000', ''),
+    -> (302, 'Carte Beta', 'MODERATEUR', 'DROITS MODERES', 'Aide à maintenir l\'ordre', 'Courant', 'AGILITE', 'https://admin.com', 'Set Beta', 'http://localhost/images/image_special.jpg', '500 000', ''),
+    -> (303, 'Carte Gamma', 'USER', 'ACCES LIMITÉ', 'Utilisateur standard', 'Rare', 'INTELLIGENCE', 'https://admin.com', 'Set Gamma', 'http://localhost/images/image_special.jpg', '300 000', ''),
+    -> (304, 'Carte Delta', 'VISITEUR', 'AUCUN DROIT', 'Visiteur occasionnel', 'Légendaire', 'CHARISME', 'https://admin.com', 'Set Delta', 'http://localhost/images/image_special.jpg', '100 000', ''),
+    -> (305, 'Carte Epsilon', 'CONTRIBUTEUR', 'DROITS DE CONTRIBUTION', 'Contribue activement', 'Mythique', 'FORCE', 'https://admin.com', 'Set Epsilon', 'http://localhost/images/image_special.jpg', '750 000', ''),
+    -> (306, 'Carte Zeta', 'VIP', 'PRIVILÈGES ÉLEVÉS', 'Accès VIP avec avantages', 'Élite', 'ENDURANCE', 'https://admin.com', 'Set Zeta', 'http://localhost/images/image_special.jpg', '850 000', ''),
+    -> (307, 'Carte Eta', 'SUPERVISEUR', 'SURVEILLANCE COMPLÈTE', 'Supervise les opérations', 'Divin', 'SAGESSE', 'https://admin.com', 'Set Eta', 'http://localhost/images/image_special.jpg', '950 000', '');
