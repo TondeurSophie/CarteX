@@ -25,3 +25,5 @@ CREATE TABLE cartes (
     id_joueur INT(11),
     FOREIGN KEY (id_joueur) REFERENCES utilisateurs(id)
 );
+
+Insert into utilisateurs values (1, "admin", "admin@admin.com", "adminadmin", 2);
