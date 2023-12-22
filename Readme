@@ -1,1 +1,26 @@
+Nous utilisons Wamp et le fichier App.js
 
+Pour lancer le projet :
+- Node Serveur.js
+- Node Api.js 
+- Nodemon index.js 
+- Npm start 
+
+Pour lancer l'ajout des 300 cartes dans la BDD avec le code python :
+- pip install mysql-connector-python
+- pip install requests
+
+python Insert.py
+
+Pour importer les cookies :
+- npm install js-cookie
+
+Autres installations :
+ - npm install cors
+- npm init
+- npm install bcrypt
+- npm install axios
+- npm install react-router-dom
+- npm install dotenv
+- npm install mariadb
+- npm install express --save
