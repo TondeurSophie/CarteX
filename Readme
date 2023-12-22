@@ -24,3 +24,8 @@ Autres installations :
 - npm install dotenv
 - npm install mariadb
 - npm install express --save
+
+
+Compte admin :
+mail : admin@admin.com
+mdp : adminadmin
